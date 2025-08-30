@@ -1,0 +1,8 @@
+openai
+python-dotenv
+yfinance
+numpy
+pandas
+matplotlib
+scikit-learn
+tensorflow

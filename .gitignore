@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual envs
+.venv/
+venv/
+
+# Secrets
+.env
+
+# Data / artifacts
+models/
+*.keras
+*.h5
+*.pkl
+*.png
+*.csv
+
+# Mac / VS Code
+.DS_Store
+.vscode/
