@@ -8,8 +8,8 @@ import pickle
 import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error, mean_absolute_error
-from tensorflow.keras.models import Sequential, load_model # type: ignore
-from tensorflow.keras.layers import LSTM, Dense, Dropout  # type: ignore
+from tensorflow.keras.models import Sequential, load_model 
+from tensorflow.keras.layers import LSTM, Dense, Dropout  
 
 class Agent:
     def __init__(self):
@@ -23,13 +23,13 @@ class Agent:
     def build_lstm_model(self, input_shape):
         model = Sequential([ # builds a stacked neural network
             # first LSTM layer (returns sequences for next LSTM)
-            LSTM(50, return_sequences=True, input_shape=input_shape),# 50 neurons, R_S=T needed when stacking another LSTM
-            Dropout(0.2),  # dropout helps prevent overfitting
+            LSTM(64, return_sequences=True, input_shape=input_shape),# 50 neurons, R_S=T needed when stacking another LSTM
+            Dropout(0.3),  # dropout helps prevent overfitting
             # second LSTM layer (final LSTM layer)
-            LSTM(50, return_sequences=False),
-            Dropout(0.2),# 20% of random neurons turned off,forces model to learn more patterns than just memorizing
+            LSTM(32, return_sequences=False),
+            Dropout(0.3),# 20% of random neurons turned off,forces model to learn more patterns than just memorizing
             #fully connected layers for final prediction
-            Dense(25), # layer has 25 neurons
+            Dense(16,activation="relu"), # layer has 16 neurons
             Dense(1)  # Output: predicted stock price
         ])
         # compile the model with Adam optimizer and MSE loss
@@ -39,7 +39,7 @@ class Agent:
     def predict_stock(self, ticker, days_ahead=5):
         # keeps uppercase
         ticker = ticker.upper()
-        seq_len = 90 # last 90 days of data
+        seq_len = 252 # 1 full trading year 
         model_path  = f"models/{ticker}_lstm_price.keras"      
         scaler_path = f"models/{ticker}_scaler_price.pkl"
 
@@ -185,7 +185,7 @@ class Agent:
                 return self.predict_stock(ticker)
            
         # if not a stock command call OpenAI's chat model
-        response = self.client.chat.completions.create(
+        response=self.client.chat.completions.create(
             model="gpt-4",
             messages=self.messages
         )
