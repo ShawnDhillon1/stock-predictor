@@ -8,8 +8,8 @@ import pickle
 import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error, mean_absolute_error
-from tensorflow.keras.models import Sequential, load_model 
-from tensorflow.keras.layers import LSTM, Dense, Dropout  
+from tensorflow.keras.models import Sequential, load_model # type : ignore 
+from tensorflow.keras.layers import LSTM, Dense, Dropout  # tyoe : ignore
 
 class Agent:
     def __init__(self):
@@ -89,7 +89,7 @@ class Agent:
         else:
             # MinMaxScaler to fit values between 0 and 1
             scaler_y = MinMaxScaler(feature_range=(0, 1))
-            # fir scaler only on y train (2D input)
+            # fitp scaler only on y train (2D input)
             scaler_y.fit(y_train.reshape(-1, 1))
             # save for future predictions
             with open(scaler_path, "wb") as f:
@@ -122,7 +122,7 @@ class Agent:
             history = model.fit(X_train, y_train, epochs=15, batch_size=32, verbose=1)
             model.save(model_path, include_optimizer=False) # we dont save optimizer state, which makes it easier to load
 
-        # 6) Compile in current environment (robust to version changes)
+        # compile in current environment (robust to version changes)
         model.compile(
             optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3), # 0.001
             loss=tf.keras.losses.MeanSquaredError(), # LF - what model tries to minimize
